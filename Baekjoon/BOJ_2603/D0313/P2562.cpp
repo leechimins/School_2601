@@ -1,3 +1,5 @@
+// 백준 문제 아니고 그냥 C++ 연습
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
