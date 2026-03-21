@@ -23,5 +23,7 @@ public class W03_01 {
 			System.out.println("컴퓨터가 이겼습니다.");
 		else
 			System.out.println("에러 발생");
+		
+		sc.close();
 	}
 }
