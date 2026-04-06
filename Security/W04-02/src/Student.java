@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
     private int sid;
     private String name, major;
 
@@ -48,32 +47,32 @@ public class Student implements Serializable {
     	}
     }
     
-    static Student readObject(String fname) {
-    	try (FileInputStream fs = new FileInputStream(fname)) {
-    		try (ObjectInputStream os = new ObjectInputStream(fs)) {
-    			os.writeObject(s);
-    			return true;
+    static Student readObject(String fname) throws IOException {
+    	try (FileInputStream fis = new FileInputStream(fname)) {
+    		try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+    			Object obj = ois.readObject();
+    			Student s = (Student) obj;
+    			return s;
     		}
-    	} catch (IOException e) {
+    	} catch (ClassNotFoundException e) {
     		e.printStackTrace();
-    		return false;
     	}
-    }
+    	return null;
+	}
     
     static boolean writeObject(String fname, Student s) {
-    	try (FileOutputStream fs = new FileOutputStream(fname)) {
-    		try (ObjectOutputStream os = new ObjectOutputStream(fs)) {
-    			os.writeObject(s);
-    			return true;
+    	try (FileOutputStream fos = new FileOutputStream(fname)) {
+    		try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+    			oos.writeObject(s);
     		}
     	} catch (IOException e) {
     		e.printStackTrace();
-    		return false;
     	}
+    	return true;
     }
 
     @Override
     public String toString() {
-        return "Student[" + name + ", " + sid + ", " + major + "]";
+        return String.format("Student[%s, %d, %s]", name, sid, major);
     }
 }
