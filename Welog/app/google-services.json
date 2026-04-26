@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "617244675609",
+    "firebase_url": "https://welog-6c0cc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "welog-6c0cc",
+    "storage_bucket": "welog-6c0cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617244675609:android:2c53dd2d98a468999be488",
+        "android_client_info": {
+          "package_name": "jimin.com.welog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQLkn4PC1l6vClYM9DTaML1tbK_DXu-TM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617244675609:android:40591277aedf14d49be488",
+        "android_client_info": {
+          "package_name": "jimin.com.welog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQLkn4PC1l6vClYM9DTaML1tbK_DXu-TM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
