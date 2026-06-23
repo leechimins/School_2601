@@ -1,0 +1,12 @@
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager instance;
+    public PlayerController playerController;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+}

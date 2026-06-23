@@ -6,13 +6,16 @@ public class PlayerController : MonoBehaviour
     public float speed;
 
     Rigidbody2D rigid;
-    SpriteRenderer spriteRd;
+    SpriteRenderer spriter;
+    Animator anim;
 
     void Start()    // awake
     {
-        speed = 2.0f;
         rigid = GetComponent<Rigidbody2D>();
-        spriteRd = GetComponent<SpriteRenderer>();
+        spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+
+        speed = 3.0f;
     }
 
     void Update()
@@ -30,8 +33,24 @@ public class PlayerController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (inputVec.x != 0) {
-            spriteRd.flipX = inputVec.x < 0;
+        anim.SetFloat("Speed", inputVec.magnitude);
+
+        if (inputVec.x != 0)
+        {
+            spriter.flipX = inputVec.x < 0;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "Orc":
+                break;
+            case "Item":
+                break;
+            default:
+                return;
         }
     }
 }
