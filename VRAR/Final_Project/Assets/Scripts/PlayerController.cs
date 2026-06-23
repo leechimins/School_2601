@@ -46,11 +46,13 @@ public class PlayerController : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Orc":
+                Debug.Log("ÀâÇû´Ù.");
                 break;
             case "Item":
                 break;
             default:
                 return;
         }
+        Destroy(other.gameObject);
     }
 }
