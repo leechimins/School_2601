@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer spriter;
     Animator anim;
 
+    GameObject arrowPrefab;
+
     void Start()    // awake
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -22,6 +24,13 @@ public class PlayerController : MonoBehaviour
     {
         inputVec.x = Input.GetAxisRaw("Horizontal");
         inputVec.y = Input.GetAxisRaw("Vertical");
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 clickVec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 playerPos = transform.position;
+            Vector2 shootDir = (clickVec - playerPos).normalized;
+            FireArrow(shootDir);
+        }
     }
 
     void FixedUpdate()
@@ -41,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         switch (other.gameObject.tag)
         {
@@ -54,5 +63,12 @@ public class PlayerController : MonoBehaviour
                 return;
         }
         Destroy(other.gameObject);
+    }
+
+    void FireArrow(Vector2 dir)
+    {
+        GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+        ArrowController arrowController = arrow.GetComponent<ArrowController>();
+        arrowController.Init(dir);
     }
 }

@@ -14,12 +14,15 @@ public class OrcController : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
 
-        speed = 2.5f;
+        speed = 2.0f;
         isLive = true;
 
         if (target == null)
         {
-            target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+            if (GameManager.instance != null)
+            {
+                target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+            }
         }
     }
 
