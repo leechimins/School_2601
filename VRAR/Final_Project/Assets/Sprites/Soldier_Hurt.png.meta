@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: f7486f4495fa33c4480542637de57095
+guid: f7bc8728b769b4d40ac8d4be3c11aee9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4346244404228752641
-    second: Arrow_0
+      213: 8162659410228577127
+    second: Soldier_Hurt_0
+  - first:
+      213: -8001067120496743791
+    second: Soldier_Hurt_1
+  - first:
+      213: -6497225179394124338
+    second: Soldier_Hurt_2
+  - first:
+      213: 6006208700412312921
+    second: Soldier_Hurt_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 48
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,40 +118,93 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arrow_0
+      name: Soldier_Hurt_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 11
-        width: 21
-        height: 9
+        x: 40
+        y: 38
+        width: 20
+        height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffa7ae2edb90fa3c0800000000000000
-      internalID: -4346244404228752641
+      spriteID: 7638c296c77974170800000000000000
+      internalID: 8162659410228577127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Hurt_1
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 38
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19aebba68df76f090800000000000000
+      internalID: -8001067120496743791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Hurt_2
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 38
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec55d748f1835d5a0800000000000000
+      internalID: -6497225179394124338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Soldier_Hurt_3
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 38
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95dbfe2adf65a5350800000000000000
+      internalID: 6006208700412312921
       vertices: []
       indices: 
       edges: []
@@ -151,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7741a7cc63324ff41a99e91ff4e2a076
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +221,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":20.0,"y":24.0},"gridSpriteOffset":{"x":40.0,"y":38.0},"gridSpritePadding":{"x":80.0,"y":76.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Arrow_0: -4346244404228752641
+      Soldier_Hurt_0: 8162659410228577127
+      Soldier_Hurt_1: -8001067120496743791
+      Soldier_Hurt_2: -6497225179394124338
+      Soldier_Hurt_3: 6006208700412312921
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
