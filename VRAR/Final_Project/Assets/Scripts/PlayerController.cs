@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer spriter;
     Animator anim;
 
-    GameObject arrowPrefab;
+    public GameObject arrowPrefab;
 
     void Start()    // awake
     {

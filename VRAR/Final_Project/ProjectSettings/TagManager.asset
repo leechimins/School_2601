@@ -7,6 +7,7 @@ TagManager:
   - Area
   - Orc
   - Item
+  - Arrow
   layers:
   - Default
   - TransparentFX

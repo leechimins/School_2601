@@ -1557,6 +1557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 0
+  arrowPrefab: {fileID: 5121570080800575364, guid: eebabd58134bba34288b01c4b093573c, type: 3}
 --- !u!50 &1218839620
 Rigidbody2D:
   serializedVersion: 5
