@@ -4,23 +4,20 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    Vector2 inputVec;
     public float speed;
     public float fireDelay;
-    float fireTimer;
+    public GameObject arrowPrefab;
+    public float maxHp;
+    public Image hpBarImage;
 
+    Vector2 inputVec;
+    float fireTimer;
     Rigidbody2D rigid;
     SpriteRenderer spriter;
     Animator anim;
-
-    public GameObject arrowPrefab;
-
-    public float maxHp;
     float currentHp;
     float invincibleDuration;
     bool isInvincible = false;
-    public Image hpBarImage;
-
 
     void Start()    // awake
     {
@@ -33,7 +30,6 @@ public class PlayerController : MonoBehaviour
         maxHp = 100f;
         invincibleDuration = 0.5f;
         currentHp = maxHp;
-
     }
 
     void Update()
@@ -43,7 +39,8 @@ public class PlayerController : MonoBehaviour
         inputVec.x = Input.GetAxisRaw("Horizontal");
         inputVec.y = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetMouseButtonDown(0) && fireTimer >= fireDelay) {
+        if (Input.GetMouseButtonDown(0) && fireTimer >= fireDelay)
+        {
             Vector2 clickVec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 playerPos = transform.position;
             Vector2 shootDir = (clickVec - playerPos).normalized;
@@ -70,7 +67,8 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Orc")) {
+        if (other.gameObject.CompareTag("Orc"))
+        {
             DecreaseHp(10f);
             Destroy(other.gameObject);
         }
@@ -83,7 +81,8 @@ public class PlayerController : MonoBehaviour
         arrowController.Init(dir);
     }
 
-    public void DecreaseHp(float amount) {
+    public void DecreaseHp(float amount)
+    {
         if (isInvincible) return;
 
         currentHp -= amount;
@@ -102,7 +101,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void IncreaseHp(float amount) {
+    public void IncreaseHp(float amount)
+    {
         currentHp += amount;
         if (currentHp > maxHp) currentHp = maxHp;
 
@@ -111,16 +111,15 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateHpUI()
     {
-
         hpBarImage.fillAmount = currentHp / maxHp;
     }
 
-    private IEnumerator TriggerInvincibility() {
+    private IEnumerator TriggerInvincibility()
+    {
         isInvincible = true;
 
         anim.SetTrigger("Damaged");
         yield return new WaitForSeconds(invincibleDuration);
         isInvincible = false;
     }
-
 }

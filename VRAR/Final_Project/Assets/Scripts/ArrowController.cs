@@ -4,6 +4,7 @@ public class ArrowController : MonoBehaviour
 {
     public float speed;
     public float fireDelay;
+
     Vector3 moveDirection;
 
     void Start()

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+    public PlayerController player;
+
     public int score = 0;
     public float survivalTime = 0f;
     public bool isGameOver = false;
@@ -9,9 +12,6 @@ public class GameManager : MonoBehaviour
     public float orcSpeed = 2.0f;
     public float orcSpawnSpan = 1.0f;
     public int waveLevel = 1;
-
-    public static GameManager instance;
-    public PlayerController player;
 
     private void Awake()
     {
@@ -38,5 +38,4 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
     }
-
 }

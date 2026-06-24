@@ -4,12 +4,11 @@ public class OrcController : MonoBehaviour
 {
     public float speed;
     public Rigidbody2D target;
+    public GameObject dropItemPrefab;
+    public float dropRate;
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
-
-    public GameObject dropItemPrefab;
-    public float dropRate;
 
     void Start()
     {
@@ -48,5 +47,4 @@ public class OrcController : MonoBehaviour
         }
         Destroy(gameObject);
     }
-
 }

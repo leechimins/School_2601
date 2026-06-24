@@ -4,8 +4,8 @@ public class OrcGenerator : MonoBehaviour
 {
     public GameObject orcPrefab;
     public float span;
-    float delta;
 
+    float delta;
     float minX = -2.5f;
     float maxX = 2.5f;
     float minY = -4.5f;
@@ -41,17 +41,14 @@ public class OrcGenerator : MonoBehaviour
                 spawnPosition.x = Random.Range(minX, maxX);
                 spawnPosition.y = maxY + buffer;
                 break;
-
             case 1:
                 spawnPosition.x = Random.Range(minX, maxX);
                 spawnPosition.y = minY - buffer;
                 break;
-
             case 2:
                 spawnPosition.x = minX - buffer;
                 spawnPosition.y = Random.Range(minY, maxY);
                 break;
-
             case 3:
             default:
                 spawnPosition.x = maxX + buffer;

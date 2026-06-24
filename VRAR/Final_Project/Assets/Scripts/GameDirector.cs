@@ -1,11 +1,11 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class GameDirector : MonoBehaviour
 {
     public static GameDirector instance;
 
+    [Header("UI Elements")]
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI scoreText;
     public GameObject gameOverPanel;
@@ -45,7 +45,6 @@ public class GameDirector : MonoBehaviour
     private void IncreaseDifficulty()
     {
         GameManager.instance.waveLevel++;
-
         GameManager.instance.orcSpeed += 0.5f;
         GameManager.instance.orcSpawnSpan = Mathf.Max(0.2f, GameManager.instance.orcSpawnSpan - 0.15f);
 
