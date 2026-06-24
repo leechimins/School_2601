@@ -746,3 +746,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/c++,unity,visualstudio,eclipse,intellij,java,c
 /VRAR/Final_Project/AGENT/sample
 /VRAR/Final_Project/Assets/Undead Survivor
+/VRAR/Final_Project/Assets/TextMesh Pro

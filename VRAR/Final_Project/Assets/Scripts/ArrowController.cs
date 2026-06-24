@@ -29,6 +29,7 @@ public class ArrowController : MonoBehaviour
         {
             OrcController orc = other.GetComponent<OrcController>();
             orc.Die();
+            GameManager.instance.AddScore(1);
             Destroy(gameObject);
         }
     }

@@ -16,7 +16,7 @@ public class OrcController : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
 
-        speed = 2.0f;
+        speed = GameManager.instance.orcSpeed;
         dropRate = 0.3f;
 
         if (target == null)

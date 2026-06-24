@@ -91,10 +91,13 @@ public class PlayerController : MonoBehaviour
 
         UpdateHpUI();
 
-        if (currentHp <= 0) {
-            Debug.Log("플레이어 사망!");
+        if (currentHp <= 0)
+        {
+            GameManager.instance.GameOver();
+            GameDirector.instance.DisplayGameOver();
         }
-        else {
+        else
+        {
             StartCoroutine(TriggerInvincibility());
         }
     }

@@ -20,6 +20,7 @@ public class OrcGenerator : MonoBehaviour
 
     void FixedUpdate()
     {
+        span = GameManager.instance.orcSpawnSpan;
         delta += Time.fixedDeltaTime;
         if (delta > span)
         {
