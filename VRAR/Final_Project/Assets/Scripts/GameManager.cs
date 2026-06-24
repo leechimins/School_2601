@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +16,22 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        ResetData();
+    }
+
+    public void ResetData()
+    {
         score = 0;
         survivalTime = 0f;
         isGameOver = false;
@@ -23,6 +39,8 @@ public class GameManager : MonoBehaviour
         orcSpeed = 2.0f;
         orcSpawnSpan = 1.0f;
         waveLevel = 1;
+
+        Time.timeScale = 1.0f;
     }
 
     public void AddScore(int amount)
@@ -37,5 +55,6 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
 
         Time.timeScale = 0f;
+        SceneManager.LoadScene("GameOverScene"); // 게임오버 씬 로드
     }
 }

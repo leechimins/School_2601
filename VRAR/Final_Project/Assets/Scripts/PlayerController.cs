@@ -93,7 +93,6 @@ public class PlayerController : MonoBehaviour
         if (currentHp <= 0)
         {
             GameManager.instance.GameOver();
-            GameDirector.instance.DisplayGameOver();
         }
         else
         {

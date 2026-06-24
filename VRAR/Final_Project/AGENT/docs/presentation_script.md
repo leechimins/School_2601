@@ -1,16 +1,16 @@
-# 🎤 발표 영상 녹화용 스크립트 (10~15분 분량 대본)
+# 🎤 발표 영상 녹화용 스크립트 (10~15분 분량 대본) - 씬 전환 추가 버전
 
 > 본 대본은 **[VR 과제 안내문.md](file:///d:/School/2026_1_Git/VRAR/Final_Project/AGENT/docs/school/VRAR%20%EA%B3%BC%EC%A0%9C%20%EC%95%88%EB%82%B4%EB%AC%B8.md)**의 핵심 요구사항을 충족하며, 발표 영상 분량을 **10분에서 15분** 사이로 채울 수 있도록 구성되었습니다.
-> 단순 요약을 넘어 **유니티 라이프사이클 엔진의 물리 원리**, **수학 좌표계 계산식**, **코드 라인 바이 라인(Line-by-Line) 정밀 분석** 및 **유니티 에디터 인스펙터 바인딩 가이드**까지 심도 있게 다룹니다.
+> 단순 팝업 연출을 넘어 **DontDestroyOnLoad를 통한 씬 간 데이터 보존 기법**, **싱글톤 중복 생성 방지 예외 처리**, **UnityEngine.SceneManagement를 활용한 씬 전환** 및 **재시작 데이터 초기화 루틴**까지 고난도 기술 분석을 포함하고 있습니다.
 
 ---
 
-## ⏱️ 발표 시간 계획표 (전체 목표 시간: 약 12~13분)
+## ⏱️ 발표 시간 계획표 (전체 목표 시간: 약 13~14분)
 1. **[도입부]** 자기소개 및 게임 개발 기획 소개 (목표: 1분 30초)
-2. **[게임 시연]** 인게임 플레이 시연 및 핵심 메커니즘 현장 설명 (목표: 2분 30초)
+2. **[게임 시연]** 인게임 플레이 시연 ➡️ 씬 전환 ➡️ 다시 시작 흐름 시연 (목표: 3분)
 3. **[5단계 설계법 분석]** 수업 시간 학습한 리소스 생각하기 기반 아키텍처 해설 (목표: 2분)
-4. **[코드 상세 분석 (Line-by-Line)]** C# 스크립트 6종의 내부 연산 원리 설명 (목표: 5분)
-5. **[유니티 씬 및 UI 셋업]** 인스펙터 바인딩 및 앵커 프리셋, SDF 폰트 셋업 팁 (목표: 1분 30초)
+4. **[코드 상세 분석 (Line-by-Line)]** 씬 간 데이터 이동 및 싱글톤 라이프사이클 분석 (목표: 6분)
+5. **[유니티 씬 및 빌드 셋업]** 빌드 세팅(Build Settings) 씬 추가 및 UI 앵커링 요약 (목표: 1분 30초)
 6. **[마무리]** 프로젝트 결과 총평 및 맺음말 (목표: 1분)
 
 ---
@@ -24,11 +24,11 @@
 
 이 프로젝트는 최근 큰 인기를 끌고 있는 서바이벌 뱀서라이크 장르의 문법을 기반으로 개발되었습니다. 게임의 큰 개요는 밀려드는 오크의 위협 속에서 궁수 캐릭터를 정교하게 컨트롤하여 살아남는 것입니다. 플레이어는 사방에서 다가오는 오크들을 투사체인 화살로 요격하고, 오크가 파괴될 때 일정 확률로 드롭되는 체력 물약을 획득해 HP를 복구해 나가야 합니다.
 
-시간이 흐를수록 오크들의 스폰 간격이 극단적으로 좁아지고 이동 속도 또한 빨라지는 동적 난이도 상승 메커니즘을 설계함으로써, 단조로운 플레이에서 벗어나 생존의 긴장감과 피지컬 조작의 재미를 극대화할 수 있도록 기획하였습니다. 그럼 코드를 분석하기에 앞서, 유니티 에디터에서 게임을 실제로 구동하여 시연하는 장면을 먼저 보여드리겠습니다."
+특히 이번 프로젝트 개발 과정에서 가장 중점적으로 다룬 심화 부분은 **'씬 전환(Scene Transition) 및 데이터 보존 시스템'**입니다. 게임 오버가 되었을 때 단순히 인게임 내에서 UI 팝업을 띄우는 가벼운 방식에서 벗어나, 독립적인 결과창 씬으로 화면을 이동시키되 플레이어가 획득한 스코어와 생존 시간 데이터를 씬 간에 소실 없이 유지하고, 다시 시작 버튼을 눌렀을 때 데이터를 완전히 리셋하여 인게임 씬을 재로드하는 탄탄한 흐름을 구축했습니다. 그럼 코드를 분석하기에 앞서, 유니티 에디터에서 게임을 실제로 구동하여 시연하는 장면을 먼저 보여드리겠습니다."
 
 ---
 
-## 🎮 Part 2. 게임 시연 및 메커니즘 설명 (1:30 ~ 4:00)
+## 🎮 Part 2. 게임 시연 및 메커니즘 설명 (1:30 ~ 4:30)
 
 **[화면 전환: 유니티 재생(Play) 버튼을 클릭하여 플레이 모드 진입]**
 
@@ -41,11 +41,14 @@
 
 게임 진행 시간이 10초가 지날 때마다 유니티 하단의 콘솔 창에 `Wave Level Up!`이라는 로그가 실시간으로 찍히게 설계되어 있습니다. 레벨이 오르면 오크들의 스폰 간격이 비약적으로 줄어들어 스폰 밀도가 급격히 높아지고, 오크 개별의 속도도 현저히 빨라져 조작의 난이도가 자연스럽게 증가합니다. 
 
-이제 적들에게 고의로 충돌하여 사망 처리를 보여드리겠습니다. **[몬스터들에게 계속 피해를 보며 HP가 0으로 도달하는 상황 시연]** 보시는 것처럼 플레이어의 체력이 완전히 고갈되어 0이 되는 순간 유니티의 시간 흐름(`Time.timeScale`)이 즉시 멈추면서 화면 전체가 정지하고, 정중앙에 어두운 반투명 패널로 이루어진 결과창이 팝업됩니다. 결과창에는 최종적으로 생존한 시간과 함께 처치한 오크 수가 정교하게 출력되어 플레이어의 기록을 알려주게 됩니다."
+이제 적들에게 고의로 충돌하여 사망 시의 씬 전환을 보여드리겠습니다. **[몬스터들에게 계속 피해를 보며 HP가 0으로 도달하는 상황 시연]** 보시는 것처럼 플레이어의 체력이 완전히 고갈되어 0이 되는 순간 유니티의 시간 흐름이 정지하며 **'GameOverScene'**으로 완전히 화면이 즉각 전환됩니다.
+
+**[화면: 새로 로드된 GameOverScene 화면]**  
+이 결과 씬에서는 앞서 인게임에서 달성한 생존 시간인 00초와 오크 처치 점수 00킬 데이터가 소실 없이 화면 중앙에 정교하게 계수되어 출력됩니다. 그리고 화면 아래 배치된 '다시 시작(Restart)' 버튼을 클릭해 보겠습니다. **[다시 시작 버튼 클릭]** 버튼을 누르면 `GameManager`에 머금고 있던 점수와 시간 데이터가 완전히 0으로 다시 리셋되면서 인게임 씬이 정상 속도로 재생되어 새 게임이 막힘없이 루프를 돌게 됩니다."
 
 ---
 
-## 📐 Part 3. 5단계 설계법 기반 아키텍처 해설 (4:00 ~ 6:00)
+## 📐 Part 3. 5단계 설계법 기반 아키텍처 해설 (4:30 ~ 6:30)
 
 **[화면 전환: 유니티 플레이 정지. Hierarchy 창의 오브젝트 구조와 Scripts 폴더의 파일들을 순서대로 마우스 커서로 짚어가며 설명]**
 
@@ -53,207 +56,147 @@
 "자, 이제 유니티 내부 설계 아키텍처를 분석하겠습니다. 본 프로젝트는 수업 시간 강의록에서 강조한 **'게임 리소스 설계 5단계 방법론'**을 체계적으로 적용하여 구조적 모듈화를 극대화했습니다.
 
 * **1단계: 화면에 놓일 오브젝트 나열**  
-  게임 화면에 시각적으로 올라갈 Player, Orc, Arrow, DropItem 프리팹들과 UI Canvas에 속한 HP 슬라이더 바, Time/Score 텍스트, 그리고 GameOverPanel 등을 먼저 하향식으로 전량 구상하여 배치했습니다.
+  게임 화면에 시각적으로 올라갈 Player, Orc, Arrow, DropItem 프리팹들과 UI Canvas에 속한 HP 슬라이더 바, Time/Score 텍스트, 그리고 독립된 결과 씬인 GameOverScene에 올라갈 결과 텍스트 등을 먼저 하향식으로 구상하여 배치했습니다.
 * **2단계: 오브젝트를 제어하는 컨트롤러(Controller) 스크립트 확정**  
   화면 내에서 물리 이동과 트리거 이벤트를 갖는 개별 요소에 독립적인 컨트롤러를 부여했습니다. 플레이어 조작을 맡는 `PlayerController`, 추적 인공지능을 담은 `OrcController`, 등속 운동하는 `ArrowController`, 충돌 시 회복을 돕는 `ItemController`가 이에 해당합니다.
 * **3단계: 자동 생성을 위한 제너레이터(Generator) 스크립트 설계**  
   오크의 실시간 화면 밖 무한 생성을 자동화하기 위해 동적 좌표 산출 공식을 내장한 `OrcGenerator`를 추가로 설계했습니다.
 * **4단계: UI 업데이트 및 전역 흐름을 지휘하는 감독(Director / Manager) 스크립트 배치**  
-  싱글톤 데이터를 보관하는 전역 상태 조율 매니저 `GameManager`를 중심으로 두고, 매 프레임 시간 갱신 및 난이도 조절 루틴을 제어하는 `GameDirector`를 함께 구축하여 데이터 관리와 화면 연출 책임을 이원화하였습니다.
+  싱글톤 데이터를 보관하고 씬 전환 시 파괴되지 않는 전역 상태 매니저 `GameManager`를 중심에 두고, 인게임 UI 갱신을 전담하는 `GameDirector`, 결과창 씬의 출력과 재시작을 제어하는 `GameOverDirector`를 각각 구축하여 책임을 엄격하게 이원화했습니다.
 * **5단계: 스크립트 작성 및 연동 흐름 계획**  
-  싱글톤 베이스를 먼저 구축하고 핵심 조작계를 연결한 후, 무한 스폰 시스템과 투사체 판정, 그리고 전체 감독 루프 순으로 모듈별 상향식 개발을 완료하였습니다."
+  싱글톤 베이스와 씬 전환 데이터 보존 흐름을 구축한 후 핵심 조작계를 연결하고 무한 스폰 시스템과 씬 매니저 순으로 개발을 완료하였습니다."
 
 ---
 
-## 💻 Part 4. C# 스크립트 Line-by-Line 상세 분석 (6:00 ~ 11:00)
+## 💻 Part 4. C# 스크립트 Line-by-Line 상세 분석 (6:30 ~ 12:30)
 
 **[화면 전환: 비주얼 스튜디오(VS Code)로 이동하여 스크립트 코드를 화면에 띄우고, 마우스 드래그를 이용해 핵심 라인을 가리키며 해설]**
 
 ---
 
-### ① GameManager.cs - "싱글톤과 전역 변수 초기화"
+### ① GameManager.cs - "DontDestroyOnLoad와 중복 파괴 조건문"
 **🗣️ 발표 멘트:**
-"먼저 게임 전체의 라이프사이클 데이터를 동적으로 통제하는 **`GameManager`** 클래스입니다. 
+"먼저 게임 전체의 라이프사이클과 씬 전환 간 데이터를 중개하는 **`GameManager`** 클래스입니다.
 
 ```csharp
-public static GameManager instance;
 private void Awake()
 {
-    instance = this; // 전역 싱글톤 인스턴스 초기화
+    if (instance == null)
+    {
+        instance = this;
+        DontDestroyOnLoad(gameObject); // 씬 전환 시 오브젝트 파괴 방지
+    }
+    else
+    {
+        Destroy(gameObject); // 씬 재로드 시 새로 생성되는 중복 GameManager 즉시 파괴
+        return;
+    }
+    ResetData();
 }
 ```
-유니티의 씬 로드 시점 중 가장 이른 시점에 호출되는 `Awake()` 생명주기 메서드 안에서 자기 자신의 참조를 정적 필드인 `instance`에 바인딩합니다. 이를 통해 다른 스크립트가 리소스를 낭비하며 `Find` 연산을 돌리지 않고도 즉시 데이터를 호출할 수 있는 캐싱 통로가 만들어집니다. 
+유니티는 새로운 씬이 로드될 때 기존 씬의 모든 오브젝트를 기본적으로 메모리에서 해제합니다. 이를 방지하고 스코어와 시간 데이터를 간직하기 위해 **`DontDestroyOnLoad(gameObject)`**를 선언했습니다. 
 
-그 아래의 `GameOver()` 공용 함수를 보면 `isGameOver` 상태 변수를 참으로 변경하고 `Time.timeScale = 0f;`를 대입합니다. 유니티 엔진의 전역 물리 및 애니메이션 시간 흐름을 `0`배속으로 만듦으로써 일시정지를 논리적으로 보장하게 됩니다."
+이때 다시 시작 버튼을 눌러 인게임 씬을 재로딩하면, 씬 시작 시 또 하나의 `GameManager`가 새로 생성되는 중복 문제가 발생합니다. 이를 막기 위해 이미 생성되어 있는 `instance`가 있다면 새로 태어난 복제본 오브젝트를 즉각 스스로 파괴(`Destroy`)하고 리턴되게 하여 메모리와 싱글톤 데이터의 무결성을 완벽하게 보존하였습니다.
+
+```csharp
+public void GameOver()
+{
+    if (isGameOver) return;
+    isGameOver = true;
+    Time.timeScale = 0f;
+    SceneManager.LoadScene("GameOverScene"); // 결과 씬 호출
+}
+```
+플레이어가 사망하면 `isGameOver` 상태 변수를 참으로 변경하고 시간의 속도를 `0`으로 일시정지시킨 뒤, `UnityEngine.SceneManagement`를 활용해 결과 씬인 `GameOverScene`을 호출합니다."
 
 ---
 
-### ② PlayerController.cs - "입력(Update)과 물리(FixedUpdate)의 생명주기 분리"
+### ② PlayerController.cs - "사망 감지 및 GameManager 연동"
 **🗣️ 발표 멘트:**
-"플레이어 제어를 구현한 **`PlayerController`**입니다. 이 코드에서 주목해야 할 부분은 유니티 생명주기 함수의 분리입니다.
+"플레이어 제어를 구현한 **`PlayerController`**입니다. 
 
 ```csharp
-void Update()
+public void DecreaseHp(float amount)
 {
-    fireTimer += Time.deltaTime;
-    inputVec.x = Input.GetAxisRaw("Horizontal");
-    inputVec.y = Input.GetAxisRaw("Vertical");
-    // ... 마우스 발사 감지
+    if (isInvincible) return;
+
+    currentHp -= amount;
+    if (currentHp < 0) currentHp = 0;
+
+    UpdateHpUI();
+
+    if (currentHp <= 0)
+    {
+        GameManager.instance.GameOver(); // 사망 시 게임매니저에 알림
+    }
+    else
+    {
+        StartCoroutine(TriggerInvincibility());
+    }
 }
 ```
-키보드 입력 및 마우스 버튼 클릭 감지는 매 프레임 정확하게 잡아내야 하므로 프레임 기반의 `Update()`에서 연산합니다. 
-
-```csharp
-void FixedUpdate()
-{
-    Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
-    rigid.MovePosition(rigid.position + nextVec);
-}
-```
-반면 물리 좌표 업데이트는 물리 엔진 프레임 주기(기본 0.02초)에 동기화되는 `FixedUpdate()`에서 실행하며, 물리 리지드바디의 관성을 활용하기 위해 `rigid.MovePosition` 메서드를 썼습니다. 프레임률 편차로 인해 생길 수 있는 떨림과 통과 버그를 방지하는 최적화입니다.
-
-또한 오크와 충돌 시 데미지를 입고 시작되는 `TriggerInvincibility` 코루틴은 임의의 무적 대기 시간(`invincibleDuration`)만큼 대기하는 양보 루틴을 실행하며 안전하게 깜빡임 연출과 방어 논리를 수행합니다."
+플레이어는 오크와 부딪혀 체력이 깎이다가 `currentHp <= 0`이 되는 즉시 싱글톤 인스턴스인 `GameManager.instance.GameOver()`를 직접 노크하여 알립니다. 이를 통해 플레이어 객체는 사망 판정에만 집중하고, 화면이 일시정지되거나 다른 씬으로 넘어가는 무거운 제어 흐름은 매니저에게 역할을 철저히 분담시켜 단일 책임 원칙을 고수하였습니다."
 
 ---
 
-### ③ OrcController.cs - "실시간 물리 추적 및 드롭률 연동"
+### ③ GameDirector.cs - "인게임 UI 갱신 및 데이터 리셋"
 **🗣️ 발표 멘트:**
-"오크 몬스터의 개별 움직임을 제어하는 **`OrcController`**입니다.
+"인게임 연출을 전담하는 **`GameDirector`**입니다.
+
+```csharp
+private void Start()
+{
+    if (GameManager.instance != null)
+    {
+        GameManager.instance.ResetData(); // 이전 판의 잔여 데이터 및 타임스케일 초기화
+    }
+    difficultyTimer = 0f;
+}
+```
+게임이 처음 시작되거나, 결과 씬에서 다시 시작 버튼을 눌러 다시 로딩될 때 `GameDirector`의 `Start()` 생명주기가 발동합니다. 이때 메모리에 유지되어 전판의 기록이 남겨져 있는 `GameManager`를 추적해 `ResetData()`를 호출합니다. 생존 시간과 점수, 그리고 오크 스폰 딜레이를 기본값으로 원상 복귀하고 타임스케일을 다시 `1.0f` 속도로 정상화해 게임 루프를 리셋합니다."
+
+---
+
+### ④ GameOverDirector.cs [NEW] - "씬 전환 결과 데이터 출력 및 재시작 제어"
+**🗣️ 발표 멘트:**
+"결과창인 `GameOverScene`을 제어하는 신규 스크립트 **`GameOverDirector`**입니다.
 
 ```csharp
 void Start()
 {
-    speed = GameManager.instance.orcSpeed; // 난이도에 대응하는 속도 설정
-    if (target == null && GameManager.instance != null)
+    if (GameManager.instance != null)
     {
-        target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+        // DontDestroyOnLoad로 살아남은 GameManager의 데이터 출력
+        finalRecordText.text = $"Survival Time: {GameManager.instance.survivalTime:F1}s\nScore: {GameManager.instance.score} Kills";
     }
 }
 ```
-오크는 인스턴스화되는 즉시 `GameManager`에 등록된 난이도 기반의 속도 속성값(`orcSpeed`)을 받아와 자신의 이동 속도로 결정합니다. 그리고 씬 내에 단 하나만 생존해 있는 플레이어의 `Rigidbody2D` 컴포넌트를 타겟으로 캐싱합니다.
+결과 씬이 시작되면 이 스크립트가 실행되어, 메모리에 보존되어 있는 `GameManager.instance`에서 점수와 생존 시간을 뽑아와 텍스트 컴포넌트인 `finalRecordText`에 동적으로 대입하여 보여줍니다.
 
-```csharp
-public void Die()
-{
-    if (Random.value <= dropRate)
-    {
-        Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
-    }
-    Destroy(gameObject);
-}
-```
-몬스터가 처치될 때 실행되는 `Die()` 메서드에서는 `Random.value` 유니티 난수 API를 이용하여 `0.0`에서 `1.0` 사이의 실수를 반환받은 뒤, 임계 확률값인 `dropRate(0.3)` 이하일 때만 아이템을 생성하도록 연산하여 30% 드롭 확률을 구현했습니다."
+또한, 결과창 내 '다시 시작' 버튼에 바인딩되는 `OnClickRestart()` 함수를 두어 데이터 리셋 명령을 날리고, `SceneManager.LoadScene(gameSceneName)`을 수행하여 사용자가 마우스를 한 번 클릭하는 것만으로 자연스러운 플레이 전환이 일어나도록 설계했습니다."
 
 ---
 
-### ④ OrcGenerator.cs - "버퍼를 포함한 화면 외곽 스폰 수학 좌표 연산"
+## ⚙️ Part 5. 유니티 씬 빌드 셋업 및 UI 앵커링 (12:30 ~ 14:00)
+
+**[화면 전환: 다시 유니티 에디터로 돌아가서 File -> Build Settings 창을 열고, GameScene과 GameOverScene이 등록된 것을 가리키며 설명]**
+
 **🗣️ 발표 멘트:**
-"오크를 자동으로 스폰하는 **`OrcGenerator`**의 스폰 로직입니다. 
+"이와 같은 씬 전환 메커니즘을 유니티 엔진에 적용하기 위해서는 반드시 **Build Settings** 세팅이 추가되어야 합니다. 
 
-```csharp
-void FixedUpdate()
-{
-    span = GameManager.instance.orcSpawnSpan; // 난이도 비례 대기 시간 단축
-    delta += Time.fixedDeltaTime;
-    // ... 생략
-}
-```
-이 생성기는 플레이 타임에 맞춰 점차 줄어드는 `GameManager`의 `orcSpawnSpan`을 매 프레임 체크하며 스폰을 제어합니다.
+에디터 상단 메뉴의 `File ➡️ Build Settings`를 열어서, 사용자가 플레이할 메인 게임 씬과 결과창이 그려지는 `GameOverScene`을 드래그하여 **`Scenes In Build`** 리스트에 순서대로 등록해주어야만 씬 로드 명령어 실행 시 발생하는 Null Reference 에러를 방지할 수 있습니다.
 
-```csharp
-public void SpawnOrc()
-{
-    // ...
-    int side = Random.Range(0, 4);
-    switch (side)
-    {
-        case 0: // 상단 외곽 영역 스폰
-            spawnPosition.x = Random.Range(minX, maxX);
-            spawnPosition.y = maxY + buffer;
-            break;
-        // ... 생략
-    }
-}
-```
-스폰 위치는 0에서 3까지의 영역 스위치를 돌려 계산됩니다. 특히 유니티 카메라 렌더링 범위인 `minX`부터 `maxY` 밖으로 오크가 생성되도록 `buffer = 1.0f` 값을 더해주었습니다. 이를 통해 오크가 화면 밖 보이지 않는 위치에서 자연스럽게 화면 안쪽으로 진입하는 자연스러운 시각적 연출을 보장할 수 있습니다."
+또한 결과 씬에서도 텍스트 가독성을 최대로 높이기 위해, 에셋 파일로 들어온 폰트를 TMP의 **`Font Asset Creator`**에서 한글 코드 범위인 **`3130-318F,AC00-D7A3`**를 빌드하여 벡터 방식의 **SDF 폰트 애셋**으로 커스텀 가공 후 적용해 주어 해상도가 변하더라도 글자가 깨지지 않도록 가시성 완성도를 확보하였습니다."
 
 ---
 
-### ⑤ ArrowController.cs - "뷰포트 비율 기반 화면 밖 즉각 파괴"
-**🗣️ 발표 멘트:**
-"화살 투사체를 통제하는 **`ArrowController`**입니다.
+## 🎀 Part 6. 마무리 및 맺음말 (14:00 ~ 15:00)
 
-```csharp
-void Update()
-{
-    transform.Translate(Vector3.right * speed * Time.deltaTime);
-
-    Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
-    if (viewPos.x < 0f || viewPos.x > 1f || viewPos.y < 0f || viewPos.y > 1f)
-    {
-        Destroy(gameObject);
-    }
-}
-```
-발사된 화살은 등속 비행을 한 뒤 화면 밖으로 이탈하면 더 이상 연산할 필요가 없어집니다. 이를 감지하기 위해 월드 좌표를 메인 카메라의 뷰포트 정규화 좌표(0~1 범위)로 변환하는 `WorldToViewportPoint`를 사용했습니다. 화살의 가상 뷰포트 좌표가 `0.0f` 미만이 되거나 `1.0f`를 초과하는 즉시 파괴 명령을 내림으로써, 씬 내의 메모리 점유율 누수를 확실하게 방지했습니다."
-
----
-
-### ⑥ GameDirector.cs - "타이머 누적 및 난이도 단축 한계점 방어 코드"
-**🗣️ 발표 멘트:**
-"마지막으로 게임을 전반적으로 제어하고 감독하는 핵심 클래스인 **`GameDirector`**입니다.
-
-```csharp
-private void Update()
-{
-    if (GameManager.instance.isGameOver) return;
-    
-    GameManager.instance.survivalTime += Time.deltaTime;
-    difficultyTimer += Time.deltaTime;
-    // ... UI Text 업데이트
-    if (difficultyTimer >= 10f)
-    {
-        difficultyTimer = 0f;
-        IncreaseDifficulty();
-    }
-}
-```
-감독은 매 프레임 시간 데이터를 누적하여 `GameManager`에 업데이트하고 화면의 실시간 생존 시간을 갱신합니다. 또한 `difficultyTimer` 변수가 `10초` 임계점에 도달하면 `IncreaseDifficulty()` 함수를 작동시킵니다.
-
-```csharp
-private void IncreaseDifficulty()
-{
-    GameManager.instance.waveLevel++;
-    GameManager.instance.orcSpeed += 0.5f;
-    GameManager.instance.orcSpawnSpan = Mathf.Max(0.2f, GameManager.instance.orcSpawnSpan - 0.15f);
-}
-```
-여기서 핵심 안전 논리가 나옵니다. 난이도가 오르면 오크의 속도가 빨라지고 스폰 주기(`orcSpawnSpan`)가 0.15초씩 줄어드는데, 제한 없이 줄어들면 스폰 주기가 마이너스 단위로 넘어가 스폰 연산 오류가 생길 것입니다. 이를 방지하기 위해 **`Mathf.Max` 방어 코드**를 작성하여 아무리 주기가 단축되어도 최소 `0.2초` 한계 스폰 지연을 안전하게 보장하도록 밸런싱을 강화했습니다."
-
----
-
-## ⚙️ Part 5. 유니티 씬 및 UI 셋업 가이드 (11:00 ~ 12:30)
-
-**[화면 전환: 다시 유니티 에디터로 돌아가서 Canvas의 하위 UI 구조와 TextMeshPro, 앵커 인스펙터 창을 화면에 확대해 보여줌]**
+**[화면 전환: 다시 유니티의 실행 씬 화면으로 복귀한 뒤 맺음말 진행]**
 
 **🗣️ 발표 멘트:**
-"이어서 이러한 코드 구조가 유니티 에디터의 씬 상에서 어떻게 오브젝트 및 UI로 시각화되어 작동하는지 셋업 구조를 알려드리겠습니다.
+"본 프로젝트는 수업 시간에 배운 5단계 리소스 설계 원칙을 깊이 있게 차용하고, 이를 넘어 유니티 엔진의 씬 로드 및 파괴 매커니즘을 활용한 **'씬 간 데이터 중개형 게임 루프'**를 깔끔하게 완성시켰습니다.
 
-하이어라키의 `Canvas` 밑에는 실시간 텍스트 UI들과 플레이어 사망 시 활성화되는 `GameOverPanel`이 계층 구조로 묶여 있습니다. 디바이스의 화면 해상도가 달라져도 UI 텍스트들이 찌그러지거나 이탈하지 않도록, `TimeText`는 좌측 상단인 **`Top-Left`**로 앵커 프리셋을 고정했고, `ScoreText`는 우측 상단인 **`Top-Right`**로 고정해 레이아웃 해상도 유연성을 극대화했습니다.
+`DontDestroyOnLoad`를 통한 메모리 보존과 재시작 시의 리셋 시퀀스, 그리고 `SceneManager`를 활용한 독립적인 씬 간 흐름을 성공적으로 코드로 정돈하며 수업 시간에 배운 내용들을 매우 논리적이고 안전한 구조로 증명해 낼 수 있었습니다.
 
-또한 화면을 반투명하게 가리는 `GameOverPanel`은 앵커를 사방으로 균등하게 채우는 **`Stretch-Stretch`**로 지정하여 다양한 종횡비 모니터에서도 화면 전체가 안정적으로 가려질 수 있도록 설정했습니다.
-
-더불어, UI 가독성을 향상시키기 위해 기본 글꼴을 사용하지 않고 무료 폰트인 `.ttf` 파일을 Assets 폴더에 가져와 유니티 TextMeshPro 도구 내의 **`Font Asset Creator`**를 통해 고해상도 벡터 방식인 **SDF Font Asset**으로 정밀 생성 및 변환하여 적용해 줌으로써 결과물의 시각적인 퀄리티와 일관성 있는 디자인 완성도를 획득했습니다."
-
----
-
-## 🎀 Part 6. 마무리 및 맺음말 (12:30 ~ 13:30)
-
-**[화면 전환: 게임이 멈춘 상태의 플레이어 캐릭터와 결과창 UI를 클로즈업해서 띄운 채 진행]**
-
-**🗣️ 발표 멘트:**
-"본 프로젝트는 서바이벌 뱀서라이크 게임의 기획 사상에 맞추어 **1) 점진적인 오크의 웨이브 가속**, **2) 체력을 보존하기 위한 파밍 확률 시스템**이라는 확실한 핵심 재미 요소를 완성성 있게 녹여냈습니다.
-
-이 과정에서 유니티 엔진이 제안하는 전역 매니저 중심의 구조를 철저히 계승하고, 물리 업데이트 프레임 분리 및 가상 뷰포트 이탈 파괴 루틴 등의 최적화 기법을 직접 코드로 녹여내며 수업 시간에 배운 이론 지식을 실제 콘텐츠 구현물로 안전하게 확장하여 검증받을 수 있었습니다.
-
-이것으로 제가 준비한 VR/AR1 기말 과제 프로젝트 발표 영상 시연 및 코드 분석 설명을 모두 마치겠습니다. 끝까지 경청해 주셔서 대단히 감사합니다. 지금까지 발표자 **[본인이름 입력]**이었습니다."
+이상으로 발표자 **[본인이름 입력]**의 기말 서바이벌 게임 프로젝트 발표 영상 설명을 모두 마치겠습니다. 끝까지 들어주셔서 대단히 감사합니다."
