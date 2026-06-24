@@ -3,17 +3,18 @@ using UnityEngine;
 public class ArrowController : MonoBehaviour
 {
     public float speed;
+    public float fireDelay;
     Vector3 moveDirection;
 
     void Start()
     {
-        speed = 8.0f;
+        speed = 5.0f;
         Destroy(gameObject, 3f);
     }
 
     void Update()
     {
-        transform.Translate(moveDirection * speed * Time.deltaTime);
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
 
         Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
         if (viewPos.x < 0f || viewPos.x > 1f || viewPos.y < 0f || viewPos.y > 1f)
