@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +15,13 @@ public class PlayerController : MonoBehaviour
 
     public GameObject arrowPrefab;
 
+    public float maxHp;
+    float currentHp;
+    float invincibleDuration;
+    bool isInvincible = false;
+    public Image hpBarImage;
+
+
     void Start()    // awake
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -21,6 +30,9 @@ public class PlayerController : MonoBehaviour
 
         speed = 3.0f;
         fireDelay = 0.5f;
+        maxHp = 100f;
+        invincibleDuration = 0.5f;
+        currentHp = maxHp;
 
     }
 
@@ -58,17 +70,10 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        switch (other.gameObject.tag)
-        {
-            case "Orc":
-                Debug.Log("ÀâÇû´Ù.");
-                break;
-            case "Item":
-                break;
-            default:
-                return;
+        if (other.gameObject.CompareTag("Orc")) {
+            DecreaseHp(10f);
+            Destroy(other.gameObject);
         }
-        Destroy(other.gameObject);
     }
 
     void FireArrow(Vector2 dir)
@@ -77,4 +82,42 @@ public class PlayerController : MonoBehaviour
         ArrowController arrowController = arrow.GetComponent<ArrowController>();
         arrowController.Init(dir);
     }
+
+    public void DecreaseHp(float amount) {
+        if (isInvincible) return;
+
+        currentHp -= amount;
+        if (currentHp < 0) currentHp = 0;
+
+        UpdateHpUI();
+
+        if (currentHp <= 0) {
+            Debug.Log("ÇÃ·¹ÀÌ¾î »ç¸Á!");
+        }
+        else {
+            StartCoroutine(TriggerInvincibility());
+        }
+    }
+
+    public void IncreaseHp(float amount) {
+        currentHp += amount;
+        if (currentHp > maxHp) currentHp = maxHp;
+
+        UpdateHpUI();
+    }
+
+    private void UpdateHpUI()
+    {
+
+        hpBarImage.fillAmount = currentHp / maxHp;
+    }
+
+    private IEnumerator TriggerInvincibility() {
+        isInvincible = true;
+
+        anim.SetTrigger("Damaged");
+        yield return new WaitForSeconds(invincibleDuration);
+        isInvincible = false;
+    }
+
 }

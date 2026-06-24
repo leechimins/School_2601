@@ -27,7 +27,8 @@ public class ArrowController : MonoBehaviour
     {
         if (other.CompareTag("Orc"))
         {
-            Destroy(other.gameObject);
+            OrcController orc = other.GetComponent<OrcController>();
+            orc.Die();
             Destroy(gameObject);
         }
     }
